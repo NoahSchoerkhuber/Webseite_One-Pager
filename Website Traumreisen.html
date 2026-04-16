@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DreamAway | AI Travel Experience</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                        url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover; background-position: center;
+        }
+        body { transition: background-color 0.3s, color 0.3s; }
+        .dest-card img { transition: transform 0.5s ease; }
+        .dest-card:hover img { transform: scale(1.1); }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 font-sans">
+
+    <nav class="fixed w-full z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md shadow-sm border-b dark:border-gray-800">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-2xl font-bold text-indigo-600 dark:text-indigo-400">DreamAway</div>
+            <div class="flex items-center space-x-4">
+                <div class="hidden md:flex space-x-6 font-medium">
+                    <a href="#home" id="nav-home" class="hover:text-indigo-600 transition">Home</a>
+                    <a href="#destinations" id="nav-dest" class="hover:text-indigo-600 transition">Ziele</a>
+                    <a href="#reviews" id="nav-rev" class="hover:text-indigo-600 transition">Reviews</a>
+                </div>
+                <button onclick="toggleLanguage()" class="text-xs font-bold bg-indigo-100 dark:bg-indigo-900 px-2 py-1 rounded border border-indigo-200 dark:border-indigo-700">
+                    <span id="lang-label">EN</span>
+                </button>
+                <button id="darkModeToggle" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700">
+                    <span id="theme-icon-light" class="hidden text-xl">☀️</span>
+                    <span id="theme-icon-dark" class="text-xl">🌙</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <header id="home" class="hero-bg h-[80vh] flex items-center justify-center text-center text-white px-4">
+        <div class="max-w-3xl">
+            <h1 id="hero-title" class="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight">Eure Reise. <br><span class="text-indigo-400">Unsere Intelligenz.</span></h1>
+            <p id="hero-desc" class="text-lg md:text-xl mb-10 text-gray-200">KI-kuratierte Trips, die perfekt zu deinem Vibe und deinem Feed passen.</p>
+            <div class="relative max-w-md mx-auto mb-10">
+                <input type="text" id="destinationSearch" onkeyup="filterDestinations()" placeholder="Suche dein Ziel..." 
+                       class="w-full px-6 py-4 rounded-full text-gray-900 shadow-2xl outline-none focus:ring-4 ring-indigo-400/50">
+            </div>
+            <a href="#destinations" id="btn-explore" class="inline-block bg-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 shadow-lg">Entdecke Ziele</a>
+        </div>
+    </header>
+
+    <section id="destinations" class="py-20 max-w-7xl mx-auto px-6">
+        <div class="text-center mb-16">
+            <h2 id="dest-title" class="text-4xl font-bold mb-4">Top Kuratierte Ziele</h2>
+            <p id="dest-subtitle" class="text-gray-600 dark:text-gray-400">Handverlesen von unserer KI.</p>
+        </div>
+        <div id="dest-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10"></div>
+    </section>
+
+    <section id="details-section" class="py-20 bg-indigo-50 dark:bg-gray-800 border-y dark:border-gray-700 hidden">
+        <div class="max-w-4xl mx-auto px-6" id="detail-content"></div>
+    </section>
+
+    <section id="reviews" class="py-20 bg-white dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 id="rev-title" class="text-4xl font-bold text-center mb-16">Community Feedback</h2>
+            <div id="rev-grid" class="grid md:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <footer class="py-12 border-t dark:border-gray-800 text-center text-gray-500 text-sm">
+        <div class="text-2xl font-bold text-indigo-600 mb-4">DreamAway</div>
+        <p id="footer-text">© 2026 Ein KI-Schulprojekt.</p>
+    </footer>
+
+    <script>
+        const trips = [
+            { 
+                id: 1, name: "Bali Spirit", price: "950€", 
+                img: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80&w=800", 
+                tag_de: "Abenteuer", tag_en: "Adventure", 
+                short_de: "Dschungel-Vibes & Tempel.", short_en: "Jungle vibes & temples.", 
+                long_de: "Willkommen auf der Insel der Götter! Bali ist der ultimative Spot für alle, die Ästhetik und Abenteuer suchen. Stell dir vor, du wachst in einer Bambus-Villa mitten im Dschungel von Ubud auf, während der Nebel über den Reisterrassen hängt. Mittags surfst du an den legendären Breaks von Uluwatu und abends feierst du in den stylischsten Beach Clubs der Welt in Canggu. Unsere KI filtert für dich die überlaufenen Touri-Fallen heraus und führt dich zu versteckten Wasserfällen, wo du dein perfektes Foto ohne Menschenmassen machen kannst. Es ist nicht nur eine Reise, es ist ein kompletter Reset für deine Seele.", 
+                long_en: "Welcome to the Island of the Gods! Bali is the ultimate spot for those seeking aesthetics and adventure. Imagine waking up in a bamboo villa in the middle of the Ubud jungle while the mist hangs over the rice terraces. In the afternoon, you surf legendary breaks in Uluwatu, and at night, you party in the world's most stylish beach clubs in Canggu. Our AI filters out the crowded tourist traps and leads you to hidden waterfalls where you can take your perfect photo without the crowds. It's not just a trip; it's a total soul reset." 
+            },
+            { 
+                id: 2, name: "Iceland Roadtrip", price: "1100€", 
+                img: "https://images.unsplash.com/photo-1476610182048-b716b8518aae?q=80&w=800", 
+                tag_de: "Natur", tag_en: "Nature", 
+                short_de: "Gletscher & Nordlichter.", short_en: "Glaciers & Northern Lights.", 
+                long_de: "Island ist Natur auf Steroiden. Hier erlebst du eine Landschaft, die so wild und ungezähmt ist, dass sie sich wie ein anderer Planet anfühlt. Miete einen 4x4 Camper und fahre entlang der Ringstraße, vorbei an rauchenden Geysiren, schwarzen Sandstränden und gigantischen Gletschern. Das Highlight? Wenn die Nacht hereinbricht und die grünen Polarlichter über den Himmel tanzen. Unsere KI berechnet die beste Route basierend auf den Wetterdaten in Echtzeit, damit du immer zur richtigen Zeit am richtigen Ort bist – egal ob in einer geheimen heißen Quelle oder am Fuße eines donnernden Wasserfalls. Ein Roadtrip für echte Explorer.", 
+                long_en: "Iceland is nature on steroids. Here you'll experience a landscape so wild and untamed it feels like another planet. Rent a 4x4 camper and drive along the Ring Road, past smoking geysers, black sand beaches, and gigantic glaciers. The highlight? When night falls and the green northern lights dance across the sky. Our AI calculates the best route based on real-time weather data so you're always in the right place at the right time – whether it's a secret hot spring or at the foot of a thundering waterfall. A road trip for true explorers." 
+            },
+            { 
+                id: 3, name: "Tokyo Nightlife", price: "1350€", 
+                img: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80&w=800", 
+                tag_de: "Cyberpunk", tag_en: "Vibes", 
+                short_de: "Neonlichter & High-Tech.", short_en: "Neon lights & high-tech.", 
+                long_de: "Tauche ein in das Jahr 2077. Tokyo ist ein Cyberpunk-Traum aus Neonlichtern, gigantischen LED-Screens und futuristischer Architektur. Starte den Abend in einer winzigen Jazz-Bar in Shinjukus Golden Gai, verliere dich in den riesigen Spielhallen von Akihabara und erlebe das verrückteste Street Food der Welt in Harajuku. Tokyo ist ein Rausch der Sinne – laut, bunt und unglaublich faszinierend. Unsere KI hilft dir, dich im Labyrinth der U-Bahnen zurechtzufinden und reserviert dir Plätze in den exklusivsten Themen-Cafés und Underground-Clubs, die du allein niemals finden würdest. Werde Teil der Megacity.", 
+                long_en: "Dive into the year 2077. Tokyo is a cyberpunk dream of neon lights, gigantic LED screens, and futuristic architecture. Start the evening in a tiny jazz bar in Shinjuku's Golden Gai, get lost in the massive arcades of Akihabara, and experience the world's craziest street food in Harajuku. Tokyo is a sensory overload – loud, colorful, and incredibly fascinating. Our AI helps you navigate the subway labyrinth and books spots in exclusive theme cafes and underground clubs you'd never find on your own. Become part of the megacity." 
+            },
+            { 
+                id: 7, name: "Seoul Energy", price: "1150€", 
+                img: "https://images.unsplash.com/photo-1517154421773-0529f29ea451?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
+                tag_de: "Trending", tag_en: "Trending", 
+                short_de: "K-Pop, Food & Tradition.", short_en: "K-Pop, Food & Tradition.", 
+                long_de: "Seoul ist die neue Hauptstadt der Coolness. Hier trifft K-Pop-Kultur auf uralte Paläste. Verbringe deine Tage in stylischen Cafés im Stadtteil Hannam-dong, geh shoppen in den futuristischen Malls von Gangnam und probiere dich durch die scharfen Köstlichkeiten der Night Markets. Seoul schläft nie – Karaoke-Bars (Norebangs) und PC-Bangs haben 24/7 offen. Unsere KI zeigt dir, wo gerade die angesagtesten Pop-up-Stores eröffnen und welche Hanok-Dörfer den besten Vibe für dein nächstes Video bieten. Seoul ist mehr als ein Trend, es ist ein Lebensgefühl, das dich süchtig machen wird.", 
+                long_en: "Seoul is the new capital of cool. Here, K-pop culture meets ancient palaces. Spend your days in stylish cafes in the Hannam-dong district, go shopping in the futuristic malls of Gangnam, and taste your way through the spicy delicacies of the night markets. Seoul never sleeps – Karaoke bars (Norebangs) and PC Bangs are open 24/7. Our AI shows you where the hottest pop-up stores are opening and which Hanok villages offer the best vibe for your next video. Seoul is more than a trend; it's a lifestyle that will get you hooked." 
+            },
+            { 
+                id: 8, name: "Cape Town Wild", price: "980€", 
+                img: "https://images.unsplash.com/photo-1581596326248-f55ac7852760?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
+                tag_de: "Abenteuer", tag_en: "Adventure", 
+                short_de: "Surfen & Tafelberg-Action.", short_en: "Surfing & Table Mountain action.", 
+                long_de: "Kapstadt ist der Ort, an dem die Berge das Meer küssen. Stell dir vor, du stehst morgens auf dem Gipfel des Lion's Head und beobachtest den Sonnenaufgang über dem Ozean, bevor du nachmittags mit Pinguinen am Boulders Beach chillst. Kapstadt bietet dir den perfekten Mix aus Natur-Action und urbanem Lifestyle. Fahr den Chapman’s Peak Drive entlang – eine der schönsten Küstenstraßen der Welt – und entdecke die bunten Häuser von Bo-Kaap. Unsere KI checkt für dich die Wind- und Wellenbedingungen für den perfekten Surf-Tag und findet die besten Rooftop-Partys der Stadt. Wild, frei und absolut unvergesslich.", 
+                long_en: "Cape Town is where the mountains kiss the sea. Imagine standing on top of Lion's Head in the morning, watching the sunrise over the ocean, before chilling with penguins at Boulders Beach in the afternoon. Cape Town offers the perfect mix of nature action and urban lifestyle. Drive along Chapman’s Peak Drive – one of the most beautiful coastal roads in the world – and discover the colorful houses of Bo-Kaap. Our AI checks wind and wave conditions for the perfect surf day and finds the best rooftop parties in town. Wild, free, and absolutely unforgettable." 
+            },
+            { 
+                id: 9, name: "Amalfi Dreams", price: "720€", 
+                img: "https://images.unsplash.com/photo-1612698093158-e07ac200d44e?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
+                tag_de: "Sommer", tag_en: "Summer", 
+                short_de: "Dolce Vita & Klippen-Vibe.", short_en: "Dolce Vita & Cliff vibe.", 
+                long_de: "Das ist der Inbegriff des italienischen Sommers. Die Amalfiküste ist wie ein Gemälde, das zum Leben erweckt wurde. Pastellfarbene Häuser, die sich an steile Klippen klammern, tiefblaues Wasser und der Duft von frischen Zitronen in der Luft. Miete dir eine klassische Vespa und cruise die Küstenstraße entlang von Positano nach Ravello. Spring von den Felsen ins glitzernde Mittelmeer und genieße die beste Pasta deines Lebens in einer versteckten Trattoria. Unsere KI findet für dich die geheimen Buchten, die man nur mit dem Boot erreicht, und sorgt dafür, dass du den Touristenströmen entkommst. Pure Magie unter der Sonne Italiens.", 
+                long_en: "This is the epitome of the Italian summer. The Amalfi Coast is like a painting brought to life. Pastel-colored houses clinging to steep cliffs, deep blue water, and the scent of fresh lemons in the air. Rent a classic Vespa and cruise along the coastal road from Positano to Ravello. Jump off the rocks into the sparkling Mediterranean and enjoy the best pasta of your life in a hidden trattoria. Our AI finds the secret coves only accessible by boat and ensures you escape the tourist crowds. Pure magic under the Italian sun." 
+            },
+            { 
+                id: 4, name: "Lisbon Surfing", price: "420€", 
+                img: "https://images.unsplash.com/photo-1559627755-42212e5c5fdf?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", 
+                tag_de: "Budget", tag_en: "Budget", 
+                short_de: "Wellen & Günstige City-Trips.", short_en: "Waves & cheap city trips.", 
+                long_de: "Lissabon ist der Place-to-be für alle, die Style wollen, ohne pleite zu gehen. Die Stadt ist eine riesige Galerie aus bunten Fliesen, steilen Hügeln und gelben Straßenbahnen. Morgens schnappst du dir ein Board und fährst rüber nach Costa da Caparica zum Surfen, abends verlierst du dich in den Bars von Pink Street oder Bairro Alto. Der Vibe hier ist entspannt, kreativ und unglaublich herzlich. Unsere KI hat die besten Tipps für günstiges, aber göttliches Street Food und zeigt dir die coolsten Vintage-Shops der Stadt. Lissabon ist jung, wild und wartet auf dich.", 
+                long_en: "Lisbon is the place to be for those who want style without going broke. The city is a giant gallery of colorful tiles, steep hills, and yellow trams. In the morning, grab a board and head over to Costa da Caparica for surfing; in the evening, get lost in the bars of Pink Street or Bairro Alto. The vibe here is relaxed, creative, and incredibly welcoming. Our AI has the best tips for cheap but divine street food and shows you the city's coolest vintage shops. Lisbon is young, wild, and waiting for you." 
+            },
+            { 
+                id: 10, name: "Peru Mystery", price: "1450€", 
+                img: "https://images.unsplash.com/photo-1526392060635-9d6019884377?q=80&w=800", 
+                tag_de: "Explorer", tag_en: "Explorer", 
+                short_de: "Machu Picchu & Rainbow Mountains.", short_en: "Machu Picchu & Rainbow Mountains.", 
+                long_de: "Bereit für das Abenteuer deines Lebens? Peru ist ein Land voller Mysterien und atemberaubender Kontraste. Wandere auf dem Inka-Trail bis zum Machu Picchu, der verlorenen Stadt in den Wolken, und spüre die Energie der Vorfahren. Aber Peru hat noch mehr: Die farbenprächtigen Rainbow Mountains, die Sanddünen von Huacachina, wo du Sandboarden kannst, und den Amazonas-Regenwald. Unsere KI optimiert deine Reiseroute für die Höhenanpassung und findet lokale Guides, die dir die wahre Kultur der Inkas zeigen. Ein Trip, der deinen Horizont erweitern und dein Herz stehlen wird.", 
+                long_en: "Ready for the adventure of your life? Peru is a land of mystery and breathtaking contrasts. Hike the Inca Trail to Machu Picchu, the lost city in the clouds, and feel the energy of the ancestors. But Peru has more: the vibrant Rainbow Mountains, the sand dunes of Huacachina where you can go sandboarding, and the Amazon rainforest. Our AI optimizes your itinerary for altitude adjustment and finds local guides who will show you the true culture of the Incas. A trip that will broaden your horizons and steal your heart." 
+            }
+        ];
+
+        const reviews = [
+            { name: "Lukas, 19", stars: "⭐⭐⭐⭐⭐", text_de: "Beste Reise meines Lebens! Die KI-Vorschläge waren 10/10.", text_en: "Best trip ever! The AI suggestions were 10/10." },
+            { name: "Sarah, 21", stars: "⭐⭐⭐⭐⭐", text_de: "Alles war extrem ästhetisch für meinen Feed.", text_en: "Everything was extremely aesthetic for my feed." },
+            { name: "Julian, 18", stars: "⭐⭐⭐⭐", text_de: "Günstig und ohne Stress. Support war top.", text_en: "Cheap and stress-free. Support was great." }
+        ];
+
+        let lang = 'de';
+
+        function renderTrips(filter = "") {
+            const grid = document.getElementById('dest-grid');
+            grid.innerHTML = trips.filter(t => t.name.toLowerCase().includes(filter.toLowerCase())).map(trip => `
+                <div class="dest-card group bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer" onclick="showDetails(${trip.id})">
+                    <div class="h-64 overflow-hidden">
+                        <img src="${trip.img}" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-indigo-500 uppercase">${lang === 'de' ? trip.tag_de : trip.tag_en}</span>
+                        <h3 class="text-2xl font-bold mt-1">${trip.name}</h3>
+                        <p class="text-gray-500 text-sm mt-2">${lang === 'de' ? trip.short_de : trip.short_en}</p>
+                        <div class="mt-4 font-bold text-indigo-600 text-lg">${trip.price}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderReviews() {
+            document.getElementById('rev-grid').innerHTML = reviews.map(r => `
+                <div class="p-6 bg-gray-50 dark:bg-gray-800 rounded-2xl border dark:border-gray-700">
+                    <div class="text-yellow-400 mb-2">${r.stars}</div>
+                    <p class="italic mb-4 text-gray-700 dark:text-gray-300">"${lang === 'de' ? r.text_de : r.text_en}"</p>
+                    <div class="font-bold">- ${r.name}</div>
+                </div>
+            `).join('');
+        }
+
+        function showDetails(id) {
+            const trip = trips.find(t => t.id === id);
+            const section = document.getElementById('details-section');
+            document.getElementById('detail-content').innerHTML = `
+                <div class="text-center">
+                    <img src="${trip.img}" class="w-full h-80 object-cover rounded-3xl mb-8 shadow-lg">
+                    <h2 class="text-4xl font-bold mb-4">${trip.name}</h2>
+                    <p class="text-xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed text-justify md:text-center">${lang === 'de' ? trip.long_de : trip.long_en}</p>
+                    <button onclick="document.getElementById('details-section').classList.add('hidden')" class="bg-indigo-600 text-white px-10 py-3 rounded-xl font-bold">Close</button>
+                </div>
+            `;
+            section.classList.remove('hidden');
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function filterDestinations() {
+            renderTrips(document.getElementById('destinationSearch').value);
+        }
+
+        function toggleLanguage() {
+            lang = lang === 'de' ? 'en' : 'de';
+            document.getElementById('lang-label').innerText = lang === 'de' ? 'EN' : 'DE';
+            
+            const t = {
+                de: { hT: "Eure Reise. Unsere Intelligenz.", hD: "KI-Trips für deinen Vibe.", bE: "Entdecke Ziele", dT: "Top Kuratierte Ziele", sP: "Suche dein Ziel...", rT: "Community Feedback" },
+                en: { hT: "Your Trip. Our Intelligence.", hD: "AI trips for your vibe.", bE: "Explore Now", dT: "Top Curated Destinations", sP: "Search destination...", rT: "Community Feedback" }
+            };
+            
+            document.getElementById('hero-title').innerHTML = lang === 'de' ? t.de.hT : t.en.hT;
+            document.getElementById('hero-desc').innerText = lang === 'de' ? t.de.hD : t.en.hD;
+            document.getElementById('btn-explore').innerText = lang === 'de' ? t.de.bE : t.en.bE;
+            document.getElementById('dest-title').innerText = lang === 'de' ? t.de.dT : t.en.dT;
+            document.getElementById('destinationSearch').placeholder = lang === 'de' ? t.de.sP : t.en.sP;
+            document.getElementById('rev-title').innerText = lang === 'de' ? t.de.rT : t.en.rT;
+
+            renderTrips();
+            renderReviews();
+        }
+
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            document.getElementById('theme-icon-light').classList.toggle('hidden');
+            document.getElementById('theme-icon-dark').classList.toggle('hidden');
+        });
+
+        renderTrips();
+        renderReviews();
+    </script>
+</body>
+</html>
